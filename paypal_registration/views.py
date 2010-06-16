@@ -8,6 +8,8 @@ from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
 
+from paypal_registration.models import PaypalRegistrationProfile
+
 def pay_with_paypal(request, username):
     user = get_object_or_404(User, username=username)
     paypal_id = settings.PAYPAL_ID
@@ -29,6 +31,16 @@ def pay_with_paypal(request, username):
 
 @csrf_exempt
 def paypal_instant_notify(request):
-    # FIXME: Some validation here is absolutely essential
-    print("\n\n\nPAYPAL SAID YES\n\n\n")
+    # FIXME: Some validation here (ie: that it really came from paypal) is
+    # absolutely essential
+    username = request.POST['item_number']
+    profiles = PaypalRegistrationProfile.objects.filter(user__username=username)
+    profiles.update(paid=True)
+
+    if Site._meta.installed:
+        site = Site.objects.get_current()
+    else:
+        site = RequestSite(request)
+    profiles[0].send_activation_email(site)
+
     return HttpResponse("ACK")

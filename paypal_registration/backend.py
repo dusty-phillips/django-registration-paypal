@@ -5,7 +5,7 @@ from django.contrib.sites.models import Site
 
 from registration import signals
 from registration.forms import RegistrationForm
-from paypal_registration.models import RegistrationProfile
+from paypal_registration.models import PaypalRegistrationProfile
 
 
 class PaypalBackend(object):
@@ -49,8 +49,8 @@ class PaypalBackend(object):
         user account, which will initially be inactive.
 
         Along with the new ``User`` object, a new
-        ``paypal_registration.models.RegistrationProfile`` will be created,
-        tied to that ``User``, containing the activation key which
+        ``paypal_registration.models.PaypalRegistrationProfile`` will be
+        created, tied to that ``User``, containing the activation key which
         will be used for this account, and indicating that they are unpaid.
 
         The user will be redirected to a paypal payment selection page.
@@ -67,7 +67,7 @@ class PaypalBackend(object):
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(username,
+        new_user = PaypalRegistrationProfile.objects.create_inactive_user(username,
                 email, password, site, send_email=False)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
@@ -85,7 +85,7 @@ class PaypalBackend(object):
         the class of this backend as the sender.
         
         """
-        activated = RegistrationProfile.objects.activate_user(activation_key)
+        activated = PaypalRegistrationProfile.objects.activate_user(activation_key)
         if activated:
             signals.user_activated.send(sender=self.__class__,
                                         user=activated,

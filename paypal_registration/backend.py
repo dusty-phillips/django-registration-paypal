@@ -102,7 +102,7 @@ class PaypalBackend(object):
         user registration.
         
         """
-        return ('pay_with_paypal', (), {})
+        return ('pay_with_paypal', (user.username,), {})
 
     def post_activation_redirect(self, request, user):
         """

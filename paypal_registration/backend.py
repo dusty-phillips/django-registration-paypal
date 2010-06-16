@@ -22,6 +22,14 @@ class PaypalBackend(object):
     To use it:
     * ensure registration and paypal_registration are both in settings.py
         INSTALLED_APPS
+    * add a PAYPAL_ID setting to settings.py. This can be either the e-mail
+        address associated with your paypal seller account, or the secure
+        ID paypal assigns. You can get this id by checking the unencrypted form
+        code for a buy it now button you create on site.
+    * add a USE_PAYPAL_SANDBOX boolean setting to settings.py. This can be used
+         for testing. See developer.paypal.com for details. This value is set
+         to *True* by default, which means you have to explicitly set it to
+         False in production instances.
     * run syncdb to install the paypal_registration model
     * create the normal django-registration templates (for the default backend) as well as:
         * registration/pay_with_paypal.html which shows a 'pay now' button.
@@ -56,8 +64,8 @@ class PaypalBackend(object):
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(username, email,
-                                                                    password, site)
+        new_user = RegistrationProfile.objects.create_inactive_user(username,
+                email, password, site, send_email=False)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request)

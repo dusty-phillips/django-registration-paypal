@@ -3,16 +3,26 @@
 This is an example pay now form only. It illustrates the paypal values that can
 be changed in the form and the template variables that are available. You
 should definitely copy and customize it to suit your template.
+
+See this page for information on the available variables:
+https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables
+
+I take no responsibility for how disgustingly confusing paypal makes this
+process.
 {% endcomment %}
 
 {% block content %}
 Thank you for paying...
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<form action="https://www.{% if use_sandbox %}sandbox.{% endif %}paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="buchuki@gmail.com" />
+<input type="hidden" name="business" value="{{paypal_id}}" />
 <input type="hidden" name="no_shipping" value="1" />
-<input type="hidden" name="return" value="{{url confirm_payment_received}}" />
-<input type="hidden" name="amount" value="{{amount}}" />
+<input type="hidden" name="return" value="{% url confirm_payment_received %}" />
+<!-- widget specifying the amount. Feel free to use a hidden field -->
+<select name="amount">
+    <option value="300">1 yr</option>
+    <option value="150">6 mos</option>
+</select>
 <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="">
 <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>

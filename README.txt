@@ -1,3 +1,7 @@
+==================================
+Django Registration Paypal Backend
+==================================
+
 This is a django-registration backend to integrate with paypal. The workflow is
 as follows:
 

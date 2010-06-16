@@ -10,7 +10,8 @@ from paypal_registration.models import PaypalRegistrationProfile
 
 class PaypalBackend(object):
     """
-    A registration backend which requires payment from paypal.
+    A registration backend which requires payment from paypal before the
+    account can be activated.
     The workflow is:
 
     1. User signs up for account.

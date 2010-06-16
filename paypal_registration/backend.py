@@ -1,14 +1,14 @@
-# Edited version of the django_registration defaultbackend
 from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 
 from registration import signals
 from registration.forms import RegistrationForm
+from registration.backends.default import DefaultBackend
 from paypal_registration.models import PaypalRegistrationProfile
 
 
-class PaypalBackend(object):
+class PaypalBackend(DefaultBackend):
     """
     A registration backend which requires payment from paypal before the
     account can be activated.
@@ -93,28 +93,6 @@ class PaypalBackend(object):
                                         request=request)
         return activated
 
-    def registration_allowed(self, request):
-        """
-        Indicate whether account registration is currently permitted,
-        based on the value of the setting ``REGISTRATION_OPEN``. This
-        is determined as follows:
-
-        * If ``REGISTRATION_OPEN`` is not specified in settings, or is
-          set to ``True``, registration is permitted.
-
-        * If ``REGISTRATION_OPEN`` is both specified and set to
-          ``False``, registration is not permitted.
-        
-        """
-        return getattr(settings, 'REGISTRATION_OPEN', True)
-
-    def get_form_class(self, request):
-        """
-        Return the default form class used for user registration.
-        
-        """
-        return RegistrationForm
-
     def post_registration_redirect(self, request, user):
         """
         Return the name of the URL to redirect to after successful
@@ -122,11 +100,3 @@ class PaypalBackend(object):
         
         """
         return ('pay_with_paypal', (user.username,), {})
-
-    def post_activation_redirect(self, request, user):
-        """
-        Return the name of the URL to redirect to after successful
-        account activation.
-        
-        """
-        return ('registration_activation_complete', (), {})

@@ -1,2 +1,3 @@
 include *.txt
+recursive-include paypal_registration *.html
 recursive-include docs *.txt

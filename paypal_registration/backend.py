@@ -23,6 +23,13 @@ class PaypalBackend(object):
     * ensure registration and paypal_registration are both in settings.py
         INSTALLED_APPS
     * run syncdb to install the paypal_registration model
+    * create the normal django-registration templates (for the default backend) as well as:
+        * registration/pay_with_paypal.html which shows a 'pay now' button.
+             There is an example template in the app templates directory for
+             this, but you should create your own.
+        * registration/confirm_payment_received.html which is the template
+             redirected to when paypal has processed payment and sends the user
+             back to your site.
 
     """
     def register(self, request, **kwargs):

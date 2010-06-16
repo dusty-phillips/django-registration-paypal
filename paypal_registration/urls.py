@@ -40,5 +40,8 @@ urlpatterns = patterns('',
    url(r'^pay_with_paypal/(?P<username>\w+)/$',
        'paypal_registration.views.pay_with_paypal',
        name='pay_with_paypal'),
+   url('r^payment_confirmation/$',
+       direct_to_template,
+       {'template': 'registration/confirm_payment_received.html'},
    (r'', include('registration.auth_urls')),
    )

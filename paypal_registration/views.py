@@ -1,13 +1,15 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
 
 def pay_with_paypal(request, username):
+    user = get_object_or_404(User, username=username)
     paypal_id = settings.PAYPAL_ID
     use_sandbox = getattr(settings, "USE_PAYPAL_SANDBOX", True)
     if Site._meta.installed:
@@ -22,7 +24,8 @@ def pay_with_paypal(request, username):
                 {'paypal_id': paypal_id,
                     'use_sandbox': use_sandbox,
                     'notify_url': paypal_ipn,
-                    'return_url': return_url}))
+                    'return_url': return_url,
+                    'item_number': username}))
 
 @csrf_exempt
 def paypal_instant_notify(request):

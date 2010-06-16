@@ -11,6 +11,7 @@ for registration::
 
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
+from django.views.decorators.csrf import csrf_exempt
 
 from registration.views import activate
 from registration.views import register
@@ -41,8 +42,11 @@ urlpatterns = patterns('',
        'paypal_registration.views.pay_with_paypal',
        name='pay_with_paypal'),
    url(r'^payment_confirmation/$',
-       direct_to_template,
+       csrf_exempt(direct_to_template),
        {'template': 'registration/confirm_payment_received.html'},
        name="confirm_payment_received"),
+   url(r'^paypal_IPN_notify/$',
+       'paypal_registration.views.paypal_instant_notify',
+       name='paypal_notify'),
    (r'', include('registration.auth_urls')),
    )

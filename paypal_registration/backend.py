@@ -31,6 +31,9 @@ class PaypalBackend(object):
          to *True* by default, which means you have to explicitly set it to
          False in production instances.
     * run syncdb to install the paypal_registration model
+    * ensure the sites model is correctly set up for your site in the django
+         admin. It is used to construct the paypal IPN url, so make sure it's
+         correct.
     * create the normal django-registration templates (for the default backend) as well as:
         * registration/pay_with_paypal.html which shows a 'pay now' button.
              There is an example template in the app templates directory for

@@ -16,9 +16,11 @@ Thank you for paying...
 <form action="https://www.{% if use_sandbox %}sandbox.{% endif %}paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="{{paypal_id}}" />
+<input type="hidden" name="notify_url" value="{{notify_url}}" />
+<input type="hidden" name="return" value="{{return_url}}" />
 <input type="hidden" name="no_shipping" value="1" />
-<input type="hidden" name="return" value="{% url confirm_payment_received %}" />
-<!-- widget specifying the amount. Feel free to use a hidden field -->
+<!-- widget specifying the amount. Feel free to use a hidden field, option,
+etc. Just name it 'amount' -->
 <select name="amount">
     <option value="300">1 yr</option>
     <option value="150">6 mos</option>

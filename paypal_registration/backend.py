@@ -1,11 +1,17 @@
 from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.dispatch import Signal
+
 
 from registration import signals
 from registration.forms import RegistrationForm
 from registration.backends.default import DefaultBackend
 from paypal_registration.models import PaypalRegistrationProfile
+
+# The user has paid
+user_paid = Signal(providing_args=["user", "request"])
+
 
 
 class PaypalBackend(DefaultBackend):

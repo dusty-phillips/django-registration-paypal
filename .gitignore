@@ -2,3 +2,6 @@
 *.swp
 *.swo
 django-registration
+MANIFEST
+build
+dist

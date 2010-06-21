@@ -1,10 +1,7 @@
 from django.db import models
 from registration.models import RegistrationProfile, RegistrationManager
 
-
-class PaypalRegistrationProfile(RegistrationProfile):
-    paid = models.BooleanField(default=False)
-    objects = RegistrationManager()
+class PaypalRegistrationManager(RegistrationManager):
 
     def activate_user(self, activation_key):
         try:
@@ -12,4 +9,9 @@ class PaypalRegistrationProfile(RegistrationProfile):
         except self.model.DoesNotExist:
             return False
 
-        return super(PaypalRegistrationProfile, self).activate_user(activation_key)
+        return super(PaypalRegistrationManager, self).activate_user(activation_key)
+
+class PaypalRegistrationProfile(RegistrationProfile):
+    paid = models.BooleanField(default=False)
+    objects = PaypalRegistrationManager()
+

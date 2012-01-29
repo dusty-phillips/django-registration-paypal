@@ -11,7 +11,10 @@ for registration::
 
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
-from django.views.decorators.csrf import csrf_exempt
+try:
+    from django.views.decorators.csrf import csrf_exempt
+except ImportError:
+    from django.contrib.csrf.middleware import csrf_exempt
 
 from registration.views import activate
 from registration.views import register
